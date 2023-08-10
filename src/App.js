@@ -1,16 +1,19 @@
 import { Provider } from "react-redux";
-import store from "./redux/store";
+
 import CakeContianner from "./components/cakeContainer";
 import IcecreamContainer from "./components/icecreamContianer";
 import UseContianer from "./components/userContianer";
+import { store } from "./features/store";
+import Counter from "./components/counter";
 
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <CakeContianner />
+        {/* <CakeContianner />
         <IcecreamContainer />
-        <UseContianer />
+        <UseContianer /> */}
+        <Counter />
       </div>
     </Provider>
   );
