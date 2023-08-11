@@ -1,23 +1,53 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const getAsyncTodos = createAsyncThunk(
+  "todos/getAsyncTodos",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("http://localhost:3001/todos");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue([], error);
+    }
+  }
+);
 
 const todoSlice = createSlice({
   name: "todos",
-  initialState: [
-    { id: 1, title: "task 1", complete: false },
-    { id: 2, title: "task 2", complete: true },
-    { id: 3, title: "task 3", complete: false },
-    { id: 4, title: "task 4", complete: false },
-  ],
+  initialState: {
+    todos: [],
+    error: null,
+    loading: true,
+  },
   reducers: {
     addTodo: (state, action) => {
-      state.push({ id: Math.random(), title: action.payload, complete: false });
+      state.todos.push({
+        id: Math.random(),
+        title: action.payload,
+        complete: false,
+      });
     },
     deleteTodo: (state, action) => {
-      state.splice(state.findIndex((todo) => todo.id === action.payload),1);
+      state.todos.splice(
+        state.todos.findIndex((todo) => todo.id === action.payload),
+        1
+      );
     },
     completeTodo: (state, action) => {
-      const selected = state.find((todo) => todo.id === action.payload);
+      const selected = state.todos.find((todo) => todo.id === action.payload);
       selected.complete = !selected.complete;
+    },
+  },
+  extraReducers: {
+    [getAsyncTodos.pending]: (state, action) => {
+      return { todos: [], loading: true, error: null };
+    },
+    [getAsyncTodos.fulfilled]: (state, action) => {
+      return { todos: action.payload, loading: false, error: null };
+    },
+    [getAsyncTodos.rejected]: (state, action) => {
+      return { todos: [], loading: false, error: action.error.message };
     },
   },
 });

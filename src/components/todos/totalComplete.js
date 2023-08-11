@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 const CompleteTodos = () => {
-  const completeTodos = useSelector((state) => state.todos).filter(
+  const completeTodos = useSelector((state) => state.todos.todos).filter(
     (todo) => todo.complete
   );
 
