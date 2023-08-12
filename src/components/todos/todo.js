@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { completeTodo, deleteTodo } from "../../features/todos/todosSlice";
+import { deleteAsyncTodo, toggleAsyncTodo } from "../../features/todos/todosSlice";
 
 const ToDo = ({ todo }) => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const ToDo = ({ todo }) => {
           checked={todo.complete}
           className="accent-green-600"
           type="checkbox"
-          onChange={() => dispatch(completeTodo(todo.id))}
+          onChange={() => dispatch(toggleAsyncTodo(todo))}
           id={todo.id}
         />
         <label
@@ -24,7 +24,7 @@ const ToDo = ({ todo }) => {
       </div>
       <button
         className="bg-red-500 px-2 py-1 rounded-lg text-white"
-        onClick={() => dispatch(deleteTodo(todo.id))}
+        onClick={() => dispatch(deleteAsyncTodo(todo.id))}
       >
         Delete
       </button>
